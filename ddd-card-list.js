@@ -12,8 +12,8 @@ import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
  * @demo index.html
  * @element ddd-card-list
  */
-export class DddCardList extends DDDSuper(I18NMixin(LitElement)) {
-
+export class DddCardList extends DDDSuper(LitElement)
+{
   static get tag() {
     return "ddd-card-list";
   }
@@ -69,16 +69,18 @@ export class DddCardList extends DDDSuper(I18NMixin(LitElement)) {
     return html`
 <div class="wrapper">
   <h3><span>${this.t.title}:</span> ${this.title}</h3>
-  <div class ="card-container">
-    $(this.cards.map(
+  <div class="card-container">
+    ${this.cards.map(
       (card) => html`
-      <ddd-card
-      title-"${card.title}"
-      description="${card.description}"
-      image="${card.image}"
-      buttonText="${card.buttonText}"
-    </ddd-card>
-    ))
+        <ddd-card
+          title="${card.title}"
+          description="${card.description}"
+          image="${card.image}"
+          buttonText="${card.buttonText}"
+        ></ddd-card>
+      `
+    )}
+  </div>
 </div>`;
   }
 
