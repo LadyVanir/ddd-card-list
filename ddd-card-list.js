@@ -21,6 +21,8 @@ export class DddCardList extends DDDSuper(LitElement)
   constructor() {
     super();
     this.title = "";
+    this.dddPrimary = "";
+    this.dddAccent = "";
     this.t = this.t || {};
     this.t = {
       ...this.t,
@@ -40,6 +42,8 @@ export class DddCardList extends DDDSuper(LitElement)
     return {
       ...super.properties,
       title: { type: String },
+      dddPrimary: { type: String, attribute: "ddd-primary" },
+      dddAccent: { type: String, attribute: "ddd-accent" },
     };
   }
 
@@ -57,8 +61,22 @@ export class DddCardList extends DDDSuper(LitElement)
         margin: var(--ddd-spacing-2);
         padding: var(--ddd-spacing-4);
       }
-      h3 span {
+      h3 {
+        margin: 0 0 var(--ddd-spacing=4) var(--ddd-spacing-2);
+        color: var(ddd-theme-default);
         font-size: var(--ddd-card-list-label-font-size, var(--ddd-font-size-s));
+      }
+      h3 span{
+        font-size: var(---ddd-font-size-s);
+        font-weight: bold;
+        color: var(-ddd-theme-primary);
+      }
+      .card-container
+      {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: var(--ddd-spacing-2);
+        padding: 0 var(--ddd-spacing-2);
       }
     `];
   }
@@ -66,24 +84,26 @@ export class DddCardList extends DDDSuper(LitElement)
   // Lit render the HTML
   render() 
   {
+    const slottedCards = Array.from(this.children)
+    .filter((child) => child.tagName === "DDD-CARD")
+    .map((child)=> 
+    {
+      const clone = child.cloneNode(true);
+      if(this.dddPrimary)
+      {
+        clone.setAttribute("ddd-primary", this.dddPrimary);
+      }
+      return clone;
+    });
     return html`
-<div class="wrapper">
-  <h3><span>${this.t.title}:</span> ${this.title}</h3>
-  <div class="card-container">
-    ${this.cards.map(
-      (card) => html`
-        <ddd-card
-          title="${card.title}"
-          description="${card.description}"
-          image="${card.image}"
-          buttonText="${card.buttonText}"
-        ></ddd-card>
-      `
-    )}
-  </div>
-</div>`;
+    <div class="wrapper">
+      <h3><span>${this.t.title}:</span> ${this.title}</h3>
+      <div class="card-container">
+        ${slottedCards}
+      </div>
+    </div>
+      `;
   }
-
   /**
    * haxProperties integration via file reference
    */
