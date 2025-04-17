@@ -11,11 +11,11 @@ export class DddCard extends DDDSuper(I18NMixin(LitElement)) {
     return {
       ...super.properties,
       title: { type: String },
-      image: { type: String },
+      image: { type: String, attribute: 'data-image' },
       line: { type: String },
       link: { type: String },
-      dddPrimary: { type: String },
-      dddAccent: { type: String },
+      dddPrimary: { type: String, attribute: 'ddd-priamry' },
+      dddAccent: { type: String, attribute: 'ddd-accent' },
     };
   }
   constructor() {
@@ -78,6 +78,24 @@ export class DddCard extends DDDSuper(I18NMixin(LitElement)) {
         border-radius: 6px;
         font-weight: bold;
       }
+    `;
+  }
+
+  render() {
+    return html`
+      <div class="card">
+        <div class="card-image">
+          <img src="${this.image}" alt="${this.title}">
+        </div>
+        <div class="color-bar" style="background-color: var(--ddd-theme-primary-${this.dddPrimary}, var(--ddd-theme-primary))"></div>
+        <div class="card-content">
+          <h3>${this.title}</h3>
+          <div class="description">
+            <slot></slot>
+          </div>
+          <a href="${this.link}" class="explore-btn">${this.t.explore} ›</a>
+        </div>
+      </div>
     `;
   }
   static get haxProperties() {
